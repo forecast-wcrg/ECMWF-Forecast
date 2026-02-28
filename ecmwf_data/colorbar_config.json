@@ -1,0 +1,29 @@
+{
+  "T2": {
+    "name": "T2",
+    "display_name": "2m Temperature",
+    "colorbar_min": -10.0,
+    "colorbar_max": 35.0,
+    "unit": "\u00b0C",
+    "cmap": "coolwarm",
+    "icon": "fa-thermometer-half"
+  },
+  "WIND": {
+    "name": "WIND",
+    "display_name": "Wind Speed",
+    "colorbar_min": 0.0,
+    "colorbar_max": 10.0,
+    "unit": "m/s",
+    "cmap": "hot_r",
+    "icon": "fa-wind"
+  },
+  "RAIN": {
+    "name": "RAIN",
+    "display_name": "Hourly Rainfall",
+    "colorbar_min": 0.0,
+    "colorbar_max": 74.0,
+    "unit": "mm",
+    "cmap": "Blues",
+    "icon": "fa-cloud-rain"
+  }
+}
