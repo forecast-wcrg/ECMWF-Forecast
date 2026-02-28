@@ -1674,7 +1674,7 @@
             
             // Try to load real image
             try {
-                const imagePath = `ecmwf/${variable}/${variable}_fc_${paddedFH}.png`;
+                const imagePath = `ecmwf/${variable}/${variable}_${paddedFH}.png`;
                 debugLog('Attempting to load image:', imagePath);
                 
                 const img = new Image();
@@ -2782,6 +2782,4 @@
         window.GFSDashboard = { config: CONFIG, state, elements };
     </script>
 </body>
-
 </html>
-
