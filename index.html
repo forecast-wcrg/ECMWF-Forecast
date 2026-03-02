@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MausamDrishti Dashboard - GFS Global Forecast</title>
+    <title>MausamDrishti Dashboard - ECMWF Global Forecast</title>
     
     <!-- Google Fonts - Beautiful Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1027,8 +1027,6 @@
                 display: none;
             }
         }
-
-
     </style>
 </head>
 <body data-theme="light">
@@ -1219,15 +1217,15 @@
 
         // ==================== CONFIGURATION ====================
         const CONFIG = {
-            forecastStart: new Date("2026-02-28T17:30:00+05:30"),
+            forecastStart: new Date("2026-03-01T17:30:00+05:30"),
             baseFrameTime: 1000,
             debugMode: true,
             // GFS domain
             gfsBounds: [[5, 42], [40.0, 123.0]],
             // Map view bounds
             mapViewBounds: [[5, 42], [40.0, 123.0]],
-            nx: 325,
-            ny: 141,
+            nx: 141,
+            ny: 325,
             variables: {
                 T2: { name: "2m Temperature", unit: "°C", precision: 1, icon: "fa-thermometer-half" },
                 RH: { name: "Relative Humidity", unit: "%", precision: 0, icon: "fa-tint" },
@@ -2040,7 +2038,7 @@
             }
         }
 
-        // ==================== CURRENT CONDITIONS ====================
+        // ==================== CURRENT CONDITIONS - FIXED VERSION ====================
         async function updateCurrentConditions(lat, lon) {
             if (!isInGFSDomain(lat, lon)) {
                 elements.currentConditions.style.display = 'none';
@@ -2066,8 +2064,9 @@
             if (!gridIndex) return;
             
             const variables = ['T2', 'RH', 'WIND', 'RAIN'];
+            const values = {}; // Store values temporarily
             
-            // Load data for each variable separately
+            // Load all data first
             for (const varName of variables) {
                 const cacheKey = `${varName}_${currentFH}`;
                 
@@ -2076,7 +2075,7 @@
                     // Try to load the data
                     try {
                         const paddedFH = currentFH.toString().padStart(3, '0');
-                        const jsonPath = `gfs_data/${varName}/${varName}_${paddedFH}.json`;
+                        const jsonPath = `ecmwf_data/${varName}/${varName}_${paddedFH}.json`;
                         debugLog('Loading current conditions for', varName, jsonPath);
                         
                         const response = await fetch(jsonPath);
@@ -2097,7 +2096,7 @@
                     }
                 }
                 
-                // Now get the value from the grid data
+                // Extract value from grid data
                 if (state.allGrids[cacheKey] && state.allGrids[cacheKey].values) {
                     const gridData = state.allGrids[cacheKey];
                     
@@ -2108,48 +2107,57 @@
                         gridData.values[gridIndex.i][gridIndex.j] !== undefined) {
                         
                         const value = gridData.values[gridIndex.i][gridIndex.j];
-                        const varConfig = CONFIG.variables[varName];
-                        const formatted = value !== null && !isNaN(value) ? value.toFixed(varConfig.precision) : '--';
-                        
-                        // Update the appropriate display element
-                        if (varName === 'T2') {
-                            elements.currentTemp.innerHTML = `${formatted}°C <small>now</small>`;
-                            debugLog(`Updated T2: ${formatted}°C`);
-                        }
-                        else if (varName === 'RH') {
-                            elements.currentHumidity.innerHTML = `${formatted}% <small>now</small>`;
-                            debugLog(`Updated RH: ${formatted}%`);
-                        }
-                        else if (varName === 'WIND') {
-                            elements.currentWind.innerHTML = `${formatted} m/s <small>now</small>`;
-                            debugLog(`Updated WIND: ${formatted} m/s`);
-                        }
-                        else if (varName === 'RAIN') {
-                            elements.currentRain.innerHTML = `${formatted} mm/6h <small>now</small>`;
-                            debugLog(`Updated RAIN: ${formatted} mm`);
-                        }
+                        values[varName] = value !== null && !isNaN(value) ? value : null;
                     } else {
+                        values[varName] = null;
                         debugLog(`Invalid grid indices for ${varName}`, { 
                             i: gridIndex.i, 
                             j: gridIndex.j, 
                             gridSize: gridData.values ? `${gridData.values.length} x ${gridData.values[0]?.length}` : 'unknown' 
                         });
-                        
-                        // Set placeholder values
-                        if (varName === 'T2') elements.currentTemp.innerHTML = `--°C <small>now</small>`;
-                        else if (varName === 'RH') elements.currentHumidity.innerHTML = `--% <small>now</small>`;
-                        else if (varName === 'WIND') elements.currentWind.innerHTML = `-- m/s <small>now</small>`;
-                        else if (varName === 'RAIN') elements.currentRain.innerHTML = `-- mm <small>now</small>`;
                     }
                 } else {
+                    values[varName] = null;
                     debugLog(`No grid data for ${varName}`);
-                    
-                    // Set placeholder values
-                    if (varName === 'T2') elements.currentTemp.innerHTML = `--°C <small>now</small>`;
-                    else if (varName === 'RH') elements.currentHumidity.innerHTML = `--% <small>now</small>`;
-                    else if (varName === 'WIND') elements.currentWind.innerHTML = `-- m/s <small>now</small>`;
-                    else if (varName === 'RAIN') elements.currentRain.innerHTML = `-- mm <small>now</small>`;
                 }
+            }
+            
+            // Update ALL displays at once to prevent race conditions
+            const t2Config = CONFIG.variables['T2'];
+            const rhConfig = CONFIG.variables['RH'];
+            const windConfig = CONFIG.variables['WIND'];
+            const rainConfig = CONFIG.variables['RAIN'];
+            
+            // Temperature
+            if (values['T2'] !== null) {
+                elements.currentTemp.innerHTML = `${values['T2'].toFixed(t2Config.precision)}°C <small>now</small>`;
+                debugLog(`Updated T2: ${values['T2'].toFixed(t2Config.precision)}°C`);
+            } else {
+                elements.currentTemp.innerHTML = `--°C <small>now</small>`;
+            }
+            
+            // Humidity
+            if (values['RH'] !== null) {
+                elements.currentHumidity.innerHTML = `${values['RH'].toFixed(rhConfig.precision)}% <small>now</small>`;
+                debugLog(`Updated RH: ${values['RH'].toFixed(rhConfig.precision)}%`);
+            } else {
+                elements.currentHumidity.innerHTML = `--% <small>now</small>`;
+            }
+            
+            // Wind
+            if (values['WIND'] !== null) {
+                elements.currentWind.innerHTML = `${values['WIND'].toFixed(windConfig.precision)} m/s <small>now</small>`;
+                debugLog(`Updated WIND: ${values['WIND'].toFixed(windConfig.precision)} m/s`);
+            } else {
+                elements.currentWind.innerHTML = `-- m/s <small>now</small>`;
+            }
+            
+            // Rain
+            if (values['RAIN'] !== null) {
+                elements.currentRain.innerHTML = `${values['RAIN'].toFixed(rainConfig.precision)} mm/6h <small>now</small>`;
+                debugLog(`Updated RAIN: ${values['RAIN'].toFixed(rainConfig.precision)} mm`);
+            } else {
+                elements.currentRain.innerHTML = `-- mm <small>now</small>`;
             }
         }
 
@@ -2794,5 +2802,3 @@
     </script>
 </body>
 </html>
-
-
