@@ -4,7 +4,7 @@
   "unit": "mm",
   "icon": "fa-cloud-rain",
   "colorbar_min": 0.0,
-  "colorbar_max": 73.0,
+  "colorbar_max": 75.0,
   "tick_step": 5,
   "cmap": "Blues",
   "forecast_hours": [
