@@ -1,5 +1,5 @@
 {
-  "forecast_start": "2026-03-04T05:52:28Z",
+  "forecast_start": "2026-03-05T06:06:42Z",
   "forecast_hours": [
     0,
     6,
@@ -86,7 +86,7 @@
       "unit": "\u00b0C",
       "icon": "fa-thermometer-half",
       "colorbar_min": -11.0,
-      "colorbar_max": 35.0,
+      "colorbar_max": 34.0,
       "tick_step": 5,
       "cmap": "coolwarm",
       "forecast_hours": [
@@ -171,7 +171,7 @@
       "name": "Relative Humidity",
       "unit": "%",
       "icon": "fa-tint",
-      "colorbar_min": 17.0,
+      "colorbar_min": 18.0,
       "colorbar_max": 94.0,
       "tick_step": 10,
       "cmap": "viridis",
@@ -258,7 +258,7 @@
       "unit": "m/s",
       "icon": "fa-wind",
       "colorbar_min": 0.0,
-      "colorbar_max": 11.0,
+      "colorbar_max": 10.0,
       "tick_step": 2,
       "cmap": "hot_r",
       "forecast_hours": [
@@ -344,7 +344,7 @@
       "unit": "mm",
       "icon": "fa-cloud-rain",
       "colorbar_min": 0.0,
-      "colorbar_max": 75.0,
+      "colorbar_max": 72.0,
       "tick_step": 5,
       "cmap": "Blues",
       "forecast_hours": [
