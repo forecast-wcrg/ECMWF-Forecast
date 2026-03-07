@@ -2,7 +2,7 @@
   "T2": {
     "name": "T2",
     "display_name": "2m Temperature",
-    "colorbar_min": -11.0,
+    "colorbar_min": -12.0,
     "colorbar_max": 34.0,
     "unit": "\u00b0C",
     "cmap": "coolwarm",
@@ -11,7 +11,7 @@
   "RH": {
     "name": "RH",
     "display_name": "Relative Humidity",
-    "colorbar_min": 18.0,
+    "colorbar_min": 19.0,
     "colorbar_max": 93.0,
     "unit": "%",
     "cmap": "viridis",
@@ -30,7 +30,7 @@
     "name": "RAIN",
     "display_name": "Hourly Rainfall",
     "colorbar_min": 0.0,
-    "colorbar_max": 75.0,
+    "colorbar_max": 73.0,
     "unit": "mm",
     "cmap": "Blues",
     "icon": "fa-cloud-rain"
