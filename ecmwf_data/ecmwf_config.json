@@ -1,5 +1,5 @@
 {
-  "forecast_start": "2026-03-08T06:07:14Z",
+  "forecast_start": "2026-03-09T06:04:28Z",
   "forecast_hours": [
     0,
     6,
@@ -85,8 +85,8 @@
       "name": "2m Temperature",
       "unit": "\u00b0C",
       "icon": "fa-thermometer-half",
-      "colorbar_min": -12.0,
-      "colorbar_max": 35.0,
+      "colorbar_min": -11.0,
+      "colorbar_max": 34.0,
       "tick_step": 5,
       "cmap": "coolwarm",
       "forecast_hours": [
@@ -172,7 +172,7 @@
       "unit": "%",
       "icon": "fa-tint",
       "colorbar_min": 18.0,
-      "colorbar_max": 94.0,
+      "colorbar_max": 93.0,
       "tick_step": 10,
       "cmap": "viridis",
       "forecast_hours": [
@@ -344,7 +344,7 @@
       "unit": "mm",
       "icon": "fa-cloud-rain",
       "colorbar_min": 0.0,
-      "colorbar_max": 76.0,
+      "colorbar_max": 75.0,
       "tick_step": 5,
       "cmap": "Blues",
       "forecast_hours": [
